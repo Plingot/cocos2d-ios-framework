@@ -1243,7 +1243,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Paths\nPROJECT_HEADER_DIR=\"${PROJECT_DIR}/libs\"\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${PRODUCT_NAME}.framework\"\nHEADERS_DIR=\"${FRAMEWORK}/Headers\"\n\nrsync -azp --include=\"*/\" --include=\"*.h\" --exclude=\"*\" \"${PROJECT_HEADER_DIR}/\" \"${HEADERS_DIR}/\"\n\ncd \"${HEADERS_DIR}\"\nfor DIR in `find . -maxdepth 1 -type d | grep -v \"^.$\" | cut -c3-`\ndo\n\tmv $DIR/* .\n\trmdir $DIR\ndone";
+			shellScript = "# Paths\nPROJECT_HEADER_DIR=\"${PROJECT_DIR}/libs\"\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${PRODUCT_NAME}.framework\"\nHEADERS_DIR=\"${FRAMEWORK}/Headers\"\n\nrsync -azp --include=\"*/\" --include=\"*.h\" --exclude=\"*\" \"${PROJECT_HEADER_DIR}/\" \"${HEADERS_DIR}/\"\n\ncd \"${HEADERS_DIR}\"\nfor DIR in `find . -maxdepth 1 -type d | grep -v \"^.$\" | cut -c3-`\ndo\n\tmv $DIR/* .\n\trmdir $DIR\ndone\n\n# Fix - ccCArray.h needed on multiple places\nln -sf Support/ccCArray.h ccCArray.h";
 		};
 /* End PBXShellScriptBuildPhase section */
 
