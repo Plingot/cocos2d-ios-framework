@@ -254,17 +254,13 @@ static 	SEL selUpdate = NULL;
 }
 
 #pragma mark CCSpriteBatchNode - draw
-#pragma mark CCSpriteBatchNode - draw
 -(void) draw
 {
-	// Optimization: Fast Dispatch
-	typedef BOOL (*UPDATE_IMP)(id, SEL);
-	UPDATE_IMP updateMethod;
-	CCSprite *child;
-	
+	// Optimization: Fast Dispatch	
 	if( textureAtlas_.totalQuads == 0 )
 		return;	
 	
+	CCSprite *child;
 	ccArray *array = descendants_->data;
 	
 	NSUInteger i = array->num;
@@ -272,15 +268,11 @@ static 	SEL selUpdate = NULL;
 
 	if( i > 0 ) {
 		
-		// compile the update methodf
-		child = array->arr[0];
-		updateMethod = (UPDATE_IMP) [child methodForSelector:selUpdate];
-
 		while (i-- > 0) {
 			child = *arr++;
 			
 			// fast dispatch
-			updateMethod(child, selUpdate);
+			child->updateMethod(child, selUpdate);
 			
 #if CC_SPRITEBATCHNODE_DEBUG_DRAW
 			//Issue #528
@@ -300,11 +292,9 @@ static 	SEL selUpdate = NULL;
 	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	// Unneeded states: -
 	
-	BOOL newBlend = NO;
-	if( blendFunc_.src != CC_BLEND_SRC || blendFunc_.dst != CC_BLEND_DST ) {
-		newBlend = YES;
+	BOOL newBlend = blendFunc_.src != CC_BLEND_SRC || blendFunc_.dst != CC_BLEND_DST;
+	if( newBlend )
 		glBlendFunc( blendFunc_.src, blendFunc_.dst );
-	}
 	
 	[textureAtlas_ drawQuads];
 	if( newBlend )
@@ -408,11 +398,12 @@ static 	SEL selUpdate = NULL;
 			return p.atlasIndex;
 		else
 			return p.atlasIndex+1;
+		
 	} else {
 		// previous & sprite belong to the same branch
-		if( ( previous.zOrder < 0 && z < 0 )|| (previous.zOrder >= 0 && z >= 0) ) {
+		if( ( previous.zOrder < 0 && z < 0 )|| (previous.zOrder >= 0 && z >= 0) )
 			return [self highestAtlasIndexInChild:previous] + 1;
-		}
+		
 		// else (previous < 0 and sprite >= 0 )
 		CCSprite *p = (CCSprite*) sprite.parent;
 		return p.atlasIndex + 1;

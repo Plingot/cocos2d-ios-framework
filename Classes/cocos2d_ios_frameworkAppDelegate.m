@@ -1,19 +1,19 @@
 //
-//  helloWorldAppDelegate.m
+//  cocos2d_ios_frameworkAppDelegate.m
 //  cocos2d-ios-framework
 //
-//  Created by Mio Nilsson on 11/20/10.
+//  Created by Mio Nilsson on 12/21/10.
 //  Copyright Eskipol 2010. All rights reserved.
 //
 
 #import "cocos2d.h"
 
-#import "helloWorldAppDelegate.h"
+#import "cocos2d_ios_frameworkAppDelegate.h"
 #import "GameConfig.h"
 #import "HelloWorldScene.h"
 #import "RootViewController.h"
 
-@implementation helloWorldAppDelegate
+@implementation cocos2d_ios_frameworkAppDelegate
 
 @synthesize window;
 
@@ -27,12 +27,13 @@
 #if GAME_AUTOROTATION == kGameAutorotationUIViewController
 
 //	CC_ENABLE_DEFAULT_GL_STATES();
+//	CCDirector *director = [CCDirector sharedDirector];
 //	CGSize size = [director winSize];
 //	CCSprite *sprite = [CCSprite spriteWithFile:@"Default.png"];
 //	sprite.position = ccp(size.width/2, size.height/2);
 //	sprite.rotation = -90;
 //	[sprite visit];
-//	[glView swapBuffers];
+//	[[director openGLView] swapBuffers];
 //	CC_ENABLE_DEFAULT_GL_STATES();
 	
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	

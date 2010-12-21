@@ -76,15 +76,15 @@ extern NSString * cocos2dVersion(void);
 
 @implementation CCDirector
 
-@synthesize animationInterval=animationInterval_;
+@synthesize animationInterval = animationInterval_;
 @synthesize runningScene = runningScene_;
 @synthesize displayFPS = displayFPS_;
-@synthesize nextDeltaTimeZero=nextDeltaTimeZero_;
-@synthesize isPaused=isPaused_;
-@synthesize sendCleanupToScene=sendCleanupToScene_;
-@synthesize runningThread=runningThread_;
-@synthesize notificationNode=notificationNode_;
-@synthesize projectionDelegate=projectionDelegate_;
+@synthesize nextDeltaTimeZero = nextDeltaTimeZero_;
+@synthesize isPaused = isPaused_;
+@synthesize sendCleanupToScene = sendCleanupToScene_;
+@synthesize runningThread = runningThread_;
+@synthesize notificationNode = notificationNode_;
+@synthesize projectionDelegate = projectionDelegate_;
 //
 // singleton stuff
 //
@@ -243,45 +243,7 @@ static CCDirector *_sharedDirector = nil;
 
 -(void) setProjection:(ccDirectorProjection)projection
 {
-	CGSize size = winSizeInPixels_;
-	
-	// XXX: quick & dirty hack to obtain the content scale factor
-	int scale = winSizeInPixels_.height / winSizeInPoints_.height;
-	
-	switch (projection) {
-		case kCCDirectorProjection2D:
-			glViewport(0, 0, size.width, size.height);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			ccglOrtho(0, size.width, 0, size.height, -1024 * scale, 1024 * scale);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			break;
-
-		case kCCDirectorProjection3D:
-			glViewport(0, 0, size.width, size.height);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			gluPerspective(60, (GLfloat)size.width/size.height, 0.5f, 1500.0f);
-			
-			glMatrixMode(GL_MODELVIEW);	
-			glLoadIdentity();
-			gluLookAt( size.width/2, size.height/2, [self getZEye],
-					  size.width/2, size.height/2, 0,
-					  0.0f, 1.0f, 0.0f);			
-			break;
-			
-		case kCCDirectorProjectionCustom:
-			if( projectionDelegate_ )
-				[projectionDelegate_ updateProjection];
-			break;
-			
-		default:
-			CCLOG(@"cocos2d: Director: unrecognized projecgtion");
-			break;
-	}
-	
-	projection_ = projection;
+	CCLOG(@"cocos2d: override me");
 }
 
 - (void) setAlphaBlending: (BOOL) on
@@ -401,9 +363,10 @@ static CCDirector *_sharedDirector = nil;
 	[scenesStack_ removeLastObject];
 	NSUInteger c = [scenesStack_ count];
 	
-	if( c == 0 ) {
+	if( c == 0 )
 		[self end];
-	} else {
+	else {
+		sendCleanupToScene_ = YES;
 		nextScene_ = [scenesStack_ objectAtIndex:c-1];
 	}
 }

@@ -80,7 +80,7 @@ typedef enum {
 	kCCTexture2DPixelFormat_Automatic = 0,
 	//! 32-bit texture: RGBA8888
 	kCCTexture2DPixelFormat_RGBA8888,
-	//! 16-bit texture: used with images that have alpha pre-multiplied
+	//! 16-bit texture without Alpha channel
 	kCCTexture2DPixelFormat_RGB565,
 	//! 8-bit textures used as masks
 	kCCTexture2DPixelFormat_A8,
@@ -124,6 +124,10 @@ typedef enum {
 }
 /** Intializes with a texture2d with data */
 - (id) initWithData:(const void*)data pixelFormat:(CCTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+
+/** These functions are needed to create mutable textures */
+- (void) releaseData:(void*)data;
+- (void*) keepData:(void*)data length:(NSUInteger)length;
 
 /** pixel format of the texture */
 @property(nonatomic,readonly) CCTexture2DPixelFormat pixelFormat;
@@ -223,7 +227,7 @@ Note that the generated textures are of type A8 - use the blending mode (GL_SRC_
  Since it is impossible to know at runtime if the PVR images have the alpha channel premultiplied, it is
  possible load them as if they have (or not) the alpha channel premultiplied.
  
- By default it is disabled by default.
+ By default it is disabled.
  
  @since v0.99.5
  */

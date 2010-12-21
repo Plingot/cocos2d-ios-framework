@@ -54,6 +54,7 @@
 // Keyboard
 - (void)keyDown:(NSEvent *)theEvent;
 - (void)keyUp:(NSEvent *)theEvent;
+- (void)flagsChanged:(NSEvent *)theEvent;
 
 // Touches
 - (void)touchesBeganWithEvent:(NSEvent *)event;
@@ -73,10 +74,12 @@
  */
 @interface MacGLView : NSOpenGLView {
 	id<MacEventDelegate> eventDelegate_;
-	
 }
 
 @property (nonatomic, readwrite, assign) id<MacEventDelegate> eventDelegate;
+
+// initializes the MacGLView with a frame rect and an OpenGL context
+- (id) initWithFrame:(NSRect)frameRect shareContext:(NSOpenGLContext*)context;
 
 // private
 +(void) load_;
